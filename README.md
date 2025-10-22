@@ -1,8 +1,9 @@
 
 
+
 # Modeling Practice
 
-This repo holds virtual analog modeling practice problems and minichallenges I made myself to understand different techniques better
+I am trying to get better at Analog Modeling! But need to practice..alot...This repo holds my experiments as I try to master different modeling techniques and turning them into audio plugins.
 
 
 ## RC Threeways
