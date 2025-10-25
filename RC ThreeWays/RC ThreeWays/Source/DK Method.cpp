@@ -34,5 +34,5 @@ void DKMethod::setKnobs(float cutoff){
 }
 
 void DKMethod::update_coefficients(){
-    float Z = 1/(2* fs * C);
+    Z = 1/(2* fs * C);
 }
