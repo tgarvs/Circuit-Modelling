@@ -79,10 +79,10 @@ public:
         a = x; //pass the incident wave back up to the resistor port
     }
     
-    
+    float R; //actual resistor value
     
 private:
-    float R; //actual resistor value
+    
 };
 
 
@@ -119,10 +119,9 @@ public:
     
     void reset_state () { delayed_a = 0; }
     
+    float C; //actual capacitance value
     
 private:
-    
-    float C; //actual capacitance value
     float delayed_a = 0.0f; //initial value for the delayed wave
     float fs = 44100.f;
 };
@@ -202,10 +201,10 @@ class RCLowPass {
 
 public:
     //setup
-    void setup() {
+    void prepare() {
         //set capacitor stuff
         cap.reset_state();
-        cap.update_sample_rate(41000);
+        cap.update_sample_rate(initial_sr);
         
         //calculate initial impedences for EACH node
         res.calc_impedences();
@@ -218,17 +217,35 @@ public:
     float process_sample(float input_voltage){
         //set Vin
         Vin.set_voltage_source(input_voltage);
-
         Vin.incident(adaptor.reflected());   // up: adaptor pulls from leaves
         adaptor.incident(Vin.reflected());   // down: adaptor pushes to leaves
-
         return cap.toVoltage();
     }
     
+    void setKnobs(float newR, float newC){
+        if(newR != res.R){
+            res.R = newR;
+            res.calc_impedences();
+            adaptor.calc_impedences();
+        }
+        
+        if(newC != cap.C){
+            cap.C = newC;
+            cap.calc_impedences();
+            adaptor.calc_impedences();
+        }
+    }
+
+    
 private:
+    void update_coefficients(){
+        
+    }
+    
     //list out all component values
     Resistor res {10000};
     Capacitor cap {10000};
     VoltageSource Vin {5};
     SeriesAdaptor adaptor {res, cap}; //send the child nodes to series adaptor
+    float initial_sr {44100};
 };
