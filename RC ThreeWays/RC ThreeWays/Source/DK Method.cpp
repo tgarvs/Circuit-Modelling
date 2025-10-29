@@ -26,9 +26,14 @@ void DKMethod::prepare (float newFs){
 }
 
 
-void DKMethod::setKnobs(float cutoff){
-    if(cutoff != C){
-        C = cutoff;
+void DKMethod::setKnobs(float res, float cap){
+    if(cap != C){
+        C = cap;
+        update_coefficients();
+    }
+    
+    if(res != R){
+        R = res;
         update_coefficients();
     }
 }

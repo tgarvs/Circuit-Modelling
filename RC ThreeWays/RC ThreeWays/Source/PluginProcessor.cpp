@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+
 //==============================================================================
 RCThreeWaysAudioProcessor::RCThreeWaysAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -95,6 +96,8 @@ void RCThreeWaysAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    
+    DK.prepare(sampleRate);
 }
 
 void RCThreeWaysAudioProcessor::releaseResources()
@@ -142,14 +145,17 @@ void RCThreeWaysAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     auto cap {apvts.getRawParameterValue("CAPACITOR") -> load()};
 //    std::cout << meth << std::endl;
     
+    DK.setKnobs(res, cap);
     
-
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        auto* channelData = buffer.getWritePointer (channel);
+        auto* ch = buffer.getWritePointer (channel);
+        for(int n = 0; n < buffer.getNumSamples(); ++n){
+            DK.process_sample(ch[n]);
+        }
 
         // ..do something to the data...
     }

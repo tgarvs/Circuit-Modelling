@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "DK Method.h"
 
 //==============================================================================
 /**
@@ -58,5 +59,11 @@ public:
 
 private:
     //==============================================================================
+    
+    
+    DKMethod DK;
+    
+    
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RCThreeWaysAudioProcessor)
 };

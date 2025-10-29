@@ -17,7 +17,7 @@ public:
     
     float process_sample(float x);
     void prepare (float newFs);
-    void setKnobs(float cutoff);
+    void setKnobs(float res, float cap);
     
 private:
     
