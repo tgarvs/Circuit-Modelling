@@ -98,6 +98,7 @@ void RCThreeWaysAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
     // initialisation that you need..
     
     DK.prepare(sampleRate);
+    WavDig.prepare(sampleRate);
 }
 
 void RCThreeWaysAudioProcessor::releaseResources()
@@ -140,25 +141,45 @@ void RCThreeWaysAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     
     
     
-    auto meth {apvts.getRawParameterValue("METHOD") -> load()};
+    int meth = apvts.getRawParameterValue("METHOD") -> load();
     auto res {apvts.getRawParameterValue("RESISTOR") -> load()};
     auto cap {apvts.getRawParameterValue("CAPACITOR") -> load()};
 //    std::cout << meth << std::endl;
     
     DK.setKnobs(res, cap);
+    WavDig.setKnobs(res, cap);
     
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* ch = buffer.getWritePointer (channel);
-        for(int n = 0; n < buffer.getNumSamples(); ++n){
-            DK.process_sample(ch[n]);
-        }
-
-        // ..do something to the data...
+    
+    switch(meth){
+        case 1:
+            for (int channel = 0; channel < totalNumInputChannels; ++channel)
+            {
+                auto* ch = buffer.getWritePointer (channel);
+                for(int n = 0; n < buffer.getNumSamples(); ++n){
+                    DK.process_sample(ch[n]);
+                }
+            }
+        
+            std::cout << res << std::endl;
+            break;
+        case 2:
+            for (int channel = 0; channel < totalNumInputChannels; ++channel)
+            {
+                auto* ch = buffer.getWritePointer (channel);
+                for(int n = 0; n < buffer.getNumSamples(); ++n){
+                    WavDig.process_sample(ch[n]);
+                }
+            }
+            std::cout << cap << std::endl;
+            break; //do nothing
+        case 3: break; //do nothing
     }
+    
+    
+
     
     
 }

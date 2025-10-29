@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "DK Method.h"
+#include "WDF.h"
 
 //==============================================================================
 /**
@@ -62,7 +63,7 @@ private:
     
     
     DKMethod DK;
-    
+    RCLowPass WavDig;
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RCThreeWaysAudioProcessor)

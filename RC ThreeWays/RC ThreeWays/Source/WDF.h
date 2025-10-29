@@ -201,10 +201,10 @@ class RCLowPass {
 
 public:
     //setup
-    void prepare() {
+    void prepare(float sr) {
         //set capacitor stuff
         cap.reset_state();
-        cap.update_sample_rate(initial_sr);
+        cap.update_sample_rate(sr);
         
         //calculate initial impedences for EACH node
         res.calc_impedences();
