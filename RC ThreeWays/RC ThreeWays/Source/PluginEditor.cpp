@@ -11,7 +11,7 @@
 
 //==============================================================================
 RCThreeWaysAudioProcessorEditor::RCThreeWaysAudioProcessorEditor (RCThreeWaysAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p), audioProcessor (p), methodLabel("METHOD"), rLabel("RESISTOR"), cLabel("CAPACITOR")
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -21,6 +21,9 @@ RCThreeWaysAudioProcessorEditor::RCThreeWaysAudioProcessorEditor (RCThreeWaysAud
     //Method Knob
     methodKnob.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     methodKnob.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 20);
+    methodAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,
+                                                                                              "METHOD",
+                                                                                              methodKnob);
     addAndMakeVisible(methodKnob);
     
     methodLabel.setText("Method", juce::NotificationType::dontSendNotification);
@@ -31,6 +34,9 @@ RCThreeWaysAudioProcessorEditor::RCThreeWaysAudioProcessorEditor (RCThreeWaysAud
     //Resistor Knob
     rKnob.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     rKnob.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 20);
+    resistorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,
+                                                                                              "RESISTOR",
+                                                                                              rKnob);
     addAndMakeVisible(rKnob);
     
     rLabel.setText("Resistor", juce::NotificationType::dontSendNotification);
@@ -41,6 +47,9 @@ RCThreeWaysAudioProcessorEditor::RCThreeWaysAudioProcessorEditor (RCThreeWaysAud
     //Capacitor Knob
     cKnob.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     cKnob.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 20);
+    capacitorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts,
+                                                                                              "CAPACITOR",
+                                                                                              cKnob);
     addAndMakeVisible(cKnob);
     
     cLabel.setText("Capacitor", juce::NotificationType::dontSendNotification);

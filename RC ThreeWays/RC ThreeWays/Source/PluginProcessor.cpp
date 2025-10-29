@@ -19,7 +19,7 @@ RCThreeWaysAudioProcessor::RCThreeWaysAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), apvts(*this, nullptr, "Parameters", create_params())
 #endif
 {
 }
@@ -134,28 +134,27 @@ void RCThreeWaysAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
+    
+    
+    
+    auto meth {apvts.getRawParameterValue("METHOD") -> load()};
+    auto res {apvts.getRawParameterValue("RESISTOR") -> load()};
+    auto cap {apvts.getRawParameterValue("CAPACITOR") -> load()};
+//    std::cout << meth << std::endl;
+    
+    
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
 
         // ..do something to the data...
     }
+    
+    
 }
 
 //==============================================================================
@@ -188,4 +187,14 @@ void RCThreeWaysAudioProcessor::setStateInformation (const void* data, int sizeI
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new RCThreeWaysAudioProcessor();
+}
+
+
+juce::AudioProcessorValueTreeState::ParameterLayout RCThreeWaysAudioProcessor::create_params(){
+    
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+    params.push_back(std::make_unique<juce::AudioParameterInt> (juce::ParameterID("METHOD", 1), "capacitor", 1, 3, 2));
+    params.push_back(std::make_unique<juce::AudioParameterInt> (juce::ParameterID("RESISTOR", 2), "resistor", 0, 20000, 1000));
+    params.push_back(std::make_unique<juce::AudioParameterInt> (juce::ParameterID("CAPACITOR", 2), "capacitor", 0, 20000, 1000));
+    return {params.begin(), params.end()};
 }

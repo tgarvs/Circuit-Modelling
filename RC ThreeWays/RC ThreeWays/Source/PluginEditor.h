@@ -31,12 +31,17 @@ private:
     
     juce::Slider methodKnob;
     juce::Label methodLabel;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> methodAttachment;
     
     juce::Slider rKnob;
     juce::Label rLabel;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> resistorAttachment;
+
     
     juce::Slider cKnob;
     juce::Label cLabel;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> capacitorAttachment;
+
     
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RCThreeWaysAudioProcessorEditor)
