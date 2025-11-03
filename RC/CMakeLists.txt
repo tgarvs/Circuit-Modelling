@@ -5,9 +5,15 @@ cmake_minimum_required(VERSION 3.24)
 project(RC  VERSION 0.0.1)
 
 
+# Disable code signing when generating the Xcode project
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO")
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_XCODE_GENERATE_SCHEME OFF)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 
 # We're going to use CPM as our package manager to bring in JUCE
 # Check to see if we have CPM installed already.  Bring it in if we don't.
