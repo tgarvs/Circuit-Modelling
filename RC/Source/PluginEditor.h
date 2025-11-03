@@ -1,14 +1,17 @@
 
 #pragma once
 
+#include <JuceHeader.h>
 #include "PluginProcessor.h"
 
 //==============================================================================
-class AudioPluginAudioProcessorEditor final : public juce::AudioProcessorEditor
+/**
+*/
+class RCThreeWaysAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
-    explicit AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor&);
-    ~AudioPluginAudioProcessorEditor() override;
+    RCThreeWaysAudioProcessorEditor (RCThreeWaysAudioProcessor&);
+    ~RCThreeWaysAudioProcessorEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
@@ -17,7 +20,22 @@ public:
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    AudioPluginAudioProcessor& processorRef;
+    RCThreeWaysAudioProcessor& audioProcessor;
+    
+    juce::Slider methodKnob;
+    juce::Label methodLabel;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> methodAttachment;
+    
+    juce::Slider rKnob;
+    juce::Label rLabel;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> resistorAttachment;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
+    
+    juce::Slider cKnob;
+    juce::Label cLabel;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> capacitorAttachment;
+
+    
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RCThreeWaysAudioProcessorEditor)
 };

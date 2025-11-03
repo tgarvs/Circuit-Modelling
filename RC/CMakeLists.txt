@@ -58,7 +58,6 @@ juce_add_plugin(${PROJECT_NAME}
         PRODUCT_NAME "RC"        
 )
 
-juce_generate_juce_header(${PROJECT_NAME})
 
 # How we want our SourceFiles to appear in our IDE
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SourceFiles})
@@ -73,6 +72,8 @@ target_compile_definitions(${PROJECT_NAME}
         JUCE_USE_CURL=0
         JUCE_VST3_CAN_REPLACE_VST2=0
 )
+
+juce_generate_juce_header(${PROJECT_NAME})
 
 # JUCE libraries to bring into our project
 target_link_libraries(${PROJECT_NAME}
