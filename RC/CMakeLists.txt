@@ -1,3 +1,4 @@
+
 cmake_minimum_required(VERSION 3.24)
 
 # Change to your project name
@@ -24,7 +25,7 @@ include(${CPM_DOWNLOAD_LOCATION})
 CPMAddPackage(
     NAME juce
     GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
-    GIT_TAG origin/main
+    GIT_TAG origin/master
 )
 
 # Make sure you include any new source files here
@@ -33,11 +34,17 @@ set(SourceFiles
         Source/PluginEditor.h
         Source/PluginProcessor.cpp
         Source/PluginProcessor.h
+	Source/MNA.cpp
+	Source/MNA.h
+	Source/WDF.cpp
+	Source/WDF.h
+	Source/DKMethod.cpp
+	Source/DKMethod.h
 )
 
 # Change these to your own preferences
 juce_add_plugin(${PROJECT_NAME}
-        COMPANY_NAME CairnAudio
+        COMPANY_NAME cairnaudio
         IS_SYNTH FALSE
         NEEDS_MIDI_INPUT FALSE
         NEEDS_MIDI_OUTPUT FALSE
@@ -50,6 +57,8 @@ juce_add_plugin(${PROJECT_NAME}
         FORMATS VST3 AU Standalone
         PRODUCT_NAME "RC"        
 )
+
+juce_generate_juce_header(${PROJECT_NAME})
 
 # How we want our SourceFiles to appear in our IDE
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SourceFiles})
@@ -71,6 +80,7 @@ target_link_libraries(${PROJECT_NAME}
         juce::juce_analytics
         juce::juce_audio_basics
         juce::juce_audio_devices
+	juce::juce_audio_processors
         juce::juce_core
         juce::juce_data_structures
         juce::juce_graphics
@@ -82,4 +92,3 @@ target_link_libraries(${PROJECT_NAME}
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 )
-
