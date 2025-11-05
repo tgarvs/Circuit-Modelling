@@ -15,6 +15,8 @@ set(CMAKE_XCODE_GENERATE_SCHEME OFF)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 
+
+
 # We're going to use CPM as our package manager to bring in JUCE
 # Check to see if we have CPM installed already.  Bring it in if we don't.
 set(CPM_DOWNLOAD_VERSION 0.34.0)
@@ -61,7 +63,7 @@ juce_add_plugin(${PROJECT_NAME}
         PLUGIN_MANUFACTURER_CODE Tap1
         PLUGIN_CODE Reg0
         FORMATS VST3 AU Standalone
-        PRODUCT_NAME "RC"        
+i        PRODUCT_NAME "RC"        
 )
 
 
@@ -81,10 +83,12 @@ target_compile_definitions(${PROJECT_NAME}
 
 juce_generate_juce_header(${PROJECT_NAME})
 
+target_include_directories(${PROJECT_NAME} PUBLIC "/Users/thomasgarvey/local/eigen-5.0.0")
+
 # JUCE libraries to bring into our project
 target_link_libraries(${PROJECT_NAME}
         PUBLIC
-        juce::juce_analytics
+	juce::juce_analytics
         juce::juce_audio_basics
         juce::juce_audio_devices
 	juce::juce_audio_processors
